@@ -1,9 +1,9 @@
 package lox;
 
-import java.unit.ArrayList;
-import java.unit.HashMap;
-import java.unit.List;
-import java.unit.Map;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import lox.Lox;
 
@@ -61,49 +61,49 @@ public class Scanner {
     private void scanToken() {
         char c = advance();
         switch (c) {
-            case "(":
+            case '(':
                 addToken(LEFT_PAREN);
                 break;
-            case ")":
+            case ')':
                 addToken(RIGHT_PAREN);
                 break;
-            case "{":
+            case '{':
                 addToken(LEFT_BRACE);
                 break;
-            case "}":
+            case '}':
                 addToken(RIGHT_BRACE);
                 break;
-            case ",":
+            case ',':
                 addToken(COMMA);
                 break;
-            case ".": 
+            case '.': 
                 addToken(DOT);
                 break;
-            case "-":
+            case '-':
                 addToken(MINUS);
                 break;
-            case "+":
+            case '+':
                 addToken(PLUS);
                 break;
-            case "*":
+            case '*':
                 addToken(STAR);
                 break;
-            case ";":
+            case ';':
                 addToken(SEMICOLON);
                 break;
-            case "!":
+            case '!':
                 addToken(match('=') ? BANG_EQUAL : BANG);
                 break;
-            case "=":
+            case '=':
                 addToken(match('=') ? EQUAL_EQUAL : EQUAL);
                 break;
-            case "<":
+            case '<':
                 addToken(match('=') ? LESS_EQUAL : LESS);
                 break;
-            case ">":
+            case '>':
                 addToken(match('=') ? GREATER_EQUAL : GREATER);
                 break;
-            case "/":
+            case '/':
                 if (match('/')) {
                     while (peek() != '\n' && !isAtEnd()) {
                         advance();
@@ -112,9 +112,9 @@ public class Scanner {
                     addToken(SLASH);
                 }
                 break;
-            case " ":
-            case "\r":
-            case "\t":
+            case ' ':
+            case '\r':
+            case '\t':
                 break;
             case '\n':
                 line++;
@@ -141,7 +141,7 @@ public class Scanner {
     }
 
     private void addToken(TokenType token) {
-        addToken(type, null);
+        addToken(token, null);
     }
 
     private void addToken(TokenType type, Object literal) {
@@ -158,7 +158,7 @@ public class Scanner {
     }
 
     private char peek() {
-        if (isAtEnd()) return "\0";
+        if (isAtEnd()) return '\0';
         return source.charAt(current);
     }
 
