@@ -8,13 +8,14 @@ abstract class Expr {
     R visitBinaryExpr(Binary expr);
     R visitGroupingExpr(Grouping expr);
     R visitLiteralExpr(Literal expr);
+    R visitLogicalExpr(Logical expr);
     R visitUnaryExpr(Unary expr);
     R visitVariableExpr(Variable expr);
   }
   static class Assign extends Expr {
     Assign(Token name, Expr value) {
-    this.name = name;
-    this.value = value;
+      this.name = name;
+      this.value = value;
     }
 
     <R> R accept(Visitor<R> visitor) {
@@ -27,9 +28,9 @@ abstract class Expr {
     }
   static class Binary extends Expr {
     Binary(Expr left, Token operator, Expr right) {
-    this.left = left;
-    this.operator = operator;
-    this.right = right;
+      this.left = left;
+      this.operator = operator;
+      this.right = right;
     }
 
     <R> R accept(Visitor<R> visitor) {
@@ -43,7 +44,7 @@ abstract class Expr {
     }
   static class Grouping extends Expr {
     Grouping(Expr expression) {
-    this.expression = expression;
+      this.expression = expression;
     }
 
     <R> R accept(Visitor<R> visitor) {
@@ -55,7 +56,7 @@ abstract class Expr {
     }
   static class Literal extends Expr {
     Literal(Object value) {
-    this.value = value;
+      this.value = value;
     }
 
     <R> R accept(Visitor<R> visitor) {
@@ -65,10 +66,26 @@ abstract class Expr {
     final Object value;
 
     }
+  static class Logical extends Expr {
+    Logical(Expr left, Token operator, Expr right) {
+      this.left = left;
+      this.operator = operator;
+      this.right = right;
+    }
+
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitLogicalExpr(this);
+    }
+
+    final Expr left;
+    final Token operator;
+    final Expr right;
+
+    }
   static class Unary extends Expr {
     Unary(Token operator, Expr right) {
-    this.operator = operator;
-    this.right = right;
+      this.operator = operator;
+      this.right = right;
     }
 
     <R> R accept(Visitor<R> visitor) {
@@ -81,7 +98,7 @@ abstract class Expr {
     }
   static class Variable extends Expr {
     Variable(Token name) {
-    this.name = name;
+      this.name = name;
     }
 
     <R> R accept(Visitor<R> visitor) {
