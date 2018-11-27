@@ -9,6 +9,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+import com.sun.org.apache.xml.internal.resolver.Resolver;
+
 
 /**
  * Lox
@@ -58,7 +60,10 @@ public class Lox {
 
         Parser parser = new Parser(tokens);
         List<Stmt> statements = parser.parse();
+        if (hadError) return;
 
+        Resolver resolver = new Resolver(interpreter);
+        resolver.resolve(statements);
         if (hadError) return;
 
         // System.out.println(new AstPrinter().print(expression));
