@@ -14,7 +14,7 @@ import java.util.List;
  * Lox
  */
 public class Lox {
-    private static final Interpreter interpreter = new Interpreter();
+    //private static final Interpreter interpreter = new Interpreter();
     static boolean hadError = false;
     static boolean hadRuntimeError = false;
 
@@ -56,16 +56,15 @@ public class Lox {
             System.out.println(token.lexeme + ": " + token.type);
         }
 
-        Parser parser = new Parser(tokens);
-        List<Stmt> statements = parser.parse();
-        if (hadError) return;
+        //Parser parser = new Parser(tokens);
+        //List<Stmt> statements = parser.parse();
+        //if (hadError) return;
 
-        Resolver resolver = new Resolver(interpreter);
-        resolver.resolve(statements);
-        if (hadError) return;
+        //Resolver resolver = new Resolver(interpreter);
+        //resolver.resolve(statements);
+        //if (hadError) return;
 
-        // System.out.println(new AstPrinter().print(expression));
-        interpreter.interpreter(statements);
+        //interpreter.interpreter(statements);
     }
 
     static void error(int line, String message) {

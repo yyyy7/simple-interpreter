@@ -108,6 +108,8 @@ public class Scanner {
                     while (peek() != '\n' && !isAtEnd()) {
                         advance();
                     }
+                } else if (match('*')) {
+                    multiLineComments();
                 } else {
                     addToken(SLASH);
                 }
@@ -219,5 +221,16 @@ public class Scanner {
         TokenType type = keywords.get(text);
         if (type == null) type = IDENTIFIER;
         addToken(type);
+    }
+
+    private void multiLineComments() {
+        while (!(peek() == '*' && peekNext() == '/')) {
+            if (peek() == '\n') line++;
+            advance();
+        }
+
+        for (int i = 0; i < 2; i++) {
+            advance();
+        }
     }
 }

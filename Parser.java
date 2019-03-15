@@ -341,6 +341,7 @@ public class Parser {
 
         consume(LEFT_BRACE, "Expect '{' before " + kind + " body.");
         List<Stmt> body = block();
+        consume(RIGHT_BRACE, "Expect '}' after " + kind + "body.");
         return new Stmt.Function(name, parameters, body);
     }
 
