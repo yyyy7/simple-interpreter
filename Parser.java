@@ -43,8 +43,8 @@ import static lox.TokenType.*;
 
  * expression     → assignment ( "," assignment)* ;
  * 
- * assignment     → ( call "." )? IDENTIFIER "=" assignment
- *                | logic_or;
+ * assignment     → ( call "." )? IDENTIFIER "=" assignment;
+ *                | logic_or ( "?" logic_or ":" logic_or)? ; 
  * 
  * logic_or       → logic_and ( "or" logic_and )* ;
  * logic_and      → equality ( "and" equality )* ;
@@ -288,6 +288,14 @@ public class Parser {
             }
 
             error(equals, "Invalid assignment target.");
+        } else if (match(QUESTION_MARK)){
+            Expr leftExpr = or();
+            Expr rightExpr;
+            if (match(COLON)){
+                rightExpr = or();
+                return new Expr.Ternary(expr, leftExpr, rightExpr);
+            }
+            error(previous(), "expect ':' after ? ");
         }
 
         return expr;

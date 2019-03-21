@@ -5,6 +5,7 @@ import java.util.List;
 abstract class Expr {
   interface Visitor<R> {
     R visitAssignExpr(Assign expr);
+    R visitTernaryExpr(Ternary expr);
     R visitBinaryExpr(Binary expr);
     R visitGroupingExpr(Grouping expr);
     R visitLiteralExpr(Literal expr);
@@ -32,6 +33,22 @@ abstract class Expr {
     final Expr value;
 
     }
+
+  static class Ternary extends Expr {
+    final Expr condition;
+    final Expr leftExpr;
+    final Expr rightExpr;
+
+    Ternary(Expr condition, Expr leftExpr, Expr rightExpr) {
+      this.condition = condition;
+      this.leftExpr = leftExpr;
+      this.rightExpr = rightExpr;
+    }
+
+    <R> R accept(Visitor<R> visitor) {
+      return visitor.visitTernaryExpr(this);
+    }
+  }
 
   static class Binary extends Expr {
     Binary(Expr left, Token operator, Expr right) {
