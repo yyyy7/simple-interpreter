@@ -264,10 +264,9 @@ public class Parser {
     
     private Expr expression() {
         Expr expr = assignment();
-        // List<Expr> commaExprs = new ArrayList<>();
         while (match(COMMA)) { 
-            expr = assignment();
-            // commaExprs.add(expr);
+            Expr rightExpr = assignment();
+            expr = new Expr.Binary(expr, previous(), rightExpr);
         }
         return expr;
     }

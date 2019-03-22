@@ -218,6 +218,16 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         return evaluate(expr.expression);
     }
 
+    @Override
+    public Object visitTernaryExpr(Expr.Ternary expr) {
+       Object conditionResult = evaluate(expr.condition); 
+       if (isTruthy(conditionResult)) {
+           return evaluate(expr.leftExpr);
+       } else {
+           return evaluate(expr.rightExpr);
+       }
+    }
+
 
     @Override
     public Object visitUnaryExpr(Expr.Unary expr) {
@@ -316,6 +326,8 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
                 return !isEqual(leftValue, rightValue);
             case EQUAL_EQUAL:
                 return isEqual(leftValue, rightValue);
+            case COMMA:
+                return rightValue;
         }
 
         return null;
