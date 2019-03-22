@@ -394,6 +394,7 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     void executeBlock(List<Stmt> statements, Environment environment) {
         Environment previous = this.environment;
+        // 保存当前环境，执行完块后恢复环境
         try {
             this.environment = environment;
 
@@ -407,10 +408,15 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     private Object lookUpVariable(Token name, Expr expr) {
         Integer distance = locals.get(expr);
+        Object value = null;
         if (distance != null) {
-            return environment.getAt(distance, name.lexeme);
+            value = environment.getAt(distance, name.lexeme);
         } else {
-            return globals.get(name);
+            value = globals.get(name);
         }
+
+        if (value == null) throw new RuntimeError(name, name.lexeme + "  uninitialized");
+
+        return value;
     }
 }
