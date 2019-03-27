@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import lox.Return;
 //import jdk.nashorn.internal.parser.TokenType;
 
 /**
@@ -108,7 +107,7 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         LoxClass klass = new LoxClass(stmt.name.lexeme, (LoxClass)superclass, methods);
 
         if (superclass != null) {
-            environment = environment.enclosing;
+            environment = environment.enclosing();
         }
 
         environment.assign(stmt.name, klass);
@@ -178,7 +177,7 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
             if (!isTruthy(left)) return left;
         }
         
-        return evaluate(expr.left);
+        return evaluate(expr.right);
     }
 
     @Override
@@ -412,7 +411,7 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         if (distance != null) {
             value = environment.getAt(distance, name.lexeme);
         } else {
-            value = globals.get(name);
+            value = environment.get(name);
         }
 
         if (value == null) throw new RuntimeError(name, name.lexeme + "  uninitialized");

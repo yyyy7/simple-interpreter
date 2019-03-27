@@ -52,19 +52,17 @@ public class Lox {
     private static void run(String source) {
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.scanTokens();
-        for (Token token : tokens) {
-            System.out.println(token.lexeme + ": " + token.type);
-        }
 
-        //Parser parser = new Parser(tokens);
-        //List<Stmt> statements = parser.parse();
-        //if (hadError) return;
+        Parser parser = new Parser(tokens);
+        List<Stmt> statements = parser.parse();
+        if (hadError) return;
 
         //Resolver resolver = new Resolver(interpreter);
         //resolver.resolve(statements);
         //if (hadError) return;
 
-        //interpreter.interpreter(statements);
+
+        new Interpreter().interpreter(statements);
     }
 
     static void error(int line, String message) {

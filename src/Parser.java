@@ -261,12 +261,20 @@ public class Parser {
         consume(RIGHT_BRACE, "Expect '}' after block.");
         return statements;
     }
-    
+
     private Expr expression() {
+        return expression("");
+    }
+    
+    private Expr expression(String kind) {
         Expr expr = assignment();
-        while (match(COMMA)) { 
-            Expr rightExpr = assignment();
-            expr = new Expr.Binary(expr, previous(), rightExpr);
+
+        // * 如果在解析函数调用参数时，不构造 comma 表达式
+        if (kind != "function") {
+            while (match(COMMA)) { 
+                Expr rightExpr = assignment();
+                expr = new Expr.Binary(expr, previous(), rightExpr);
+            }
         }
         return expr;
     }
@@ -416,7 +424,7 @@ public class Parser {
 
         consume(LEFT_BRACE, "Expect '{' before " + kind + " body.");
         List<Stmt> body = block();
-        consume(RIGHT_BRACE, "Expect '}' after " + kind + "body.");
+        //consume(RIGHT_BRACE, "Expect '}' after " + kind + "body.");
         return new Stmt.Function(name, parameters, body);
     }
 
@@ -529,7 +537,7 @@ public class Parser {
                     error(peek(), "Cannot have more than 8 arguments.");
                 }
    
-                arguments.add(expression());
+                arguments.add(expression("function"));
             } while (match(COMMA));
         }
         

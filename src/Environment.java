@@ -53,7 +53,7 @@ public class Environment {
     Environment ancestor(int distance) {
         Environment environment = this;
         for (int i = 0; i < distance; i++) {
-            environment = envirionment.enclosing;
+            environment = environment.enclosing;
         }
 
         return environment;
@@ -61,5 +61,9 @@ public class Environment {
 
     void assignAt(int distance, Token name, Object value) {
         ancestor(distance).values.put(name.lexeme, value);
+    }
+
+    public Environment enclosing() {
+        return enclosing;
     }
 }
