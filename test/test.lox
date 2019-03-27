@@ -1,4 +1,13 @@
-a = 5 /*fdfi
-        d*/
+fun f(a) {
+    if (a < 2) {
+        return a;
+    } else {
+        return f(a-1) + f(a-2);
+    }
+}
+var a = 13;
+print f(a);
+
+// output: 233
 
 
